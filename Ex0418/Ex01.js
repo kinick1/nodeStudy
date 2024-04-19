@@ -38,6 +38,9 @@ http.createServer(function(request,response){
 
     response.end();// 여기까지 응답을 마무리 하겠다!
 }).listen(3001);
+//.listen(3001); -> createServer 로 만들어진 사용자의 임의서버를
+// 3001공간에 실행시키겠다.
+
 //URL : 해당 하는 주소는 컴퓨터 서버에 접근하겠습니다.(요청을 보내겠습니다)
 //http://loclahost:3001
 //http://127.0.0.1:3001

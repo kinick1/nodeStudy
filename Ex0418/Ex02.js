@@ -4,6 +4,13 @@ const http=require("http");
 const url=require("url");
 
 http.createServer(function(request,response){
+    // 요청 방식 확인 : request.method
+    if(request.method=='GET'){
+        console.log("GET")
+    }
+    else if(request.method=='POST'){
+        console.log("POST")
+    }
 
     //requset : 요청한 정보에 대한 전체 데이터가 담겨있다.
 
