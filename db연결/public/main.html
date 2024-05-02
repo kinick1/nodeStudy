@@ -6,22 +6,70 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>DB에 접근하여 데이터 조회, 삽입, 삭제</h1>
-    <button onclick="selectData()">조회</button>
-    <button>삽입</button>
-    <button>삭제</button>
+    <h1>DB에 접근해서 데이터를 조회, 삽입, 삭제</h1>
+    <button onclick="selectData()">데이터 조회</button>
+    <button onclick="insertData()">데이터 삽입</button>
+    <button onclick="deleteData()">데이터 삭제</button>
+    <hr>
+
+    <h1>회원가입</h1>
+    ID: <input id="id" type="text"><br>
+    PW: <input id="pw" type="password"><br>
+    NickName: <input id="nick" type="text">
+    <hr>
+
+    <h1>회원 삭제</h1>
+    ID: <input type="text" id="delID">
+
+
 
     <script>
-
-        const selectData=()=>{
-            console.log("db조회 실행");
-            //비동기 방식으로 node에게 데이터를 요청
+        const selectData = ()=>{
+            console.log("DB 조회 실행");
+            // 비동기 방식으로 node에게 데이터를 요청
             // router에게 특정 경로로 접근하면, DB에 들어가서 데이터를 꺼내와!
-            // ajax, axios, fetch
-            let url="http://localhost:3000/select"
-            fetch(url).then((res)=>res.json()).then((res)=>console.log(res))
+            // ajax(쿼리스트링), axios(리액트), fetch(js) 
+            let url = "http://localhost:3000/select"
+            fetch(url).then((res)=>res.json()).then((res)=> {console.log(res)});
+            // fetch(url).then((res)=>{console.log(res)})
         }
 
+
+
+        const insertData = () =>{
+
+            let id=document.getElementById("id").value
+            let pw=document.getElementById("pw").value
+            let nick=document.getElementById("nick").value
+            let url=`http://localhost:3000/insert?id=${id}&pw=${pw}&nick=${nick}`
+            
+
+            // http://localhost:3000/insert
+            // ID : smhrd, PW: 123, NICK : Minsu
+            //let url = "http://localhost:3000/insert"
+            fetch(url).then((res)=>res.json()).then((res)=>console.log("insert"));
+        }
+
+
+
+        const deleteData = () =>{
+            let id=document.getElementById("delID").value
+            let url=`http://localhost:3000/delete?id=${id}`
+            // nodejs_member 테이블의 데이터 중 ID가 "smhrd"인 회원 삭제
+            // 삭제 성공 -> alert('성공')
+            // 삭제 실패 -> alert('실패')
+            //let url = "http://localhost:3000/delete"
+           // fetch(url).then((res)=>res.json()).then((res)=>console.log(res));
+           fetch(url,{
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+             },
+            body:JSON.stringify({id:"test"})
+            });
+            
+        }
     </script>
 </body>
 </html>
