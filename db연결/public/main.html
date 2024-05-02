@@ -10,16 +10,16 @@
     <button onclick="selectData()">데이터 조회</button>
     <button onclick="insertData()">데이터 삽입</button>
     <button onclick="deleteData()">데이터 삭제</button>
-    <hr>
 
-    <h1>회원가입</h1>
-    ID: <input id="id" type="text"><br>
-    PW: <input id="pw" type="password"><br>
-    NickName: <input id="nick" type="text">
     <hr>
+    <h3>회원가입</h3>
+    ID : <input id="id"><br>
+    PW : <input id="pw"><br>
+    NICK : <input id="nick"><br>
 
-    <h1>회원 삭제</h1>
-    ID: <input type="text" id="delID">
+    <hr>
+    <h3>회원삭제</h3>
+    ID : <input id="deleteID">
 
 
 
@@ -33,42 +33,72 @@
             fetch(url).then((res)=>res.json()).then((res)=> {console.log(res)});
             // fetch(url).then((res)=>{console.log(res)})
         }
-
-
-
         const insertData = () =>{
-
-            let id=document.getElementById("id").value
-            let pw=document.getElementById("pw").value
-            let nick=document.getElementById("nick").value
-            let url=`http://localhost:3000/insert?id=${id}&pw=${pw}&nick=${nick}`
-            
-
+            /* 1. ID : smhrd, PW: 123, NICK : Minsu 데이터 삽입
             // http://localhost:3000/insert
-            // ID : smhrd, PW: 123, NICK : Minsu
-            //let url = "http://localhost:3000/insert"
+            let url = "http://localhost:3000/insert"
             fetch(url).then((res)=>res.json()).then((res)=>console.log("insert"));
+            */
+            
+            // 2. 회원가입
+            // input 태그 안에 적은 id, pw, nick 정보 가져오기
+            let id = document.getElementById("id").value 
+            let pw = document.getElementById("pw").value 
+            let nick = document.getElementById("nick").value
+            // get 방식
+            // let url = `http://localhost:3000/insert?id=${id}&pw=${pw}&nick=${nick}`
+            // fetch(url).then((res)=>res.json()).then((res)=>console.log("insert"));
+
+            // post 방식
+            let url = "http://localhost:3000/insert"
+            fetch(url,{
+                method:"POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                // 데이터를 JSON 객체로 변환해서 body 안에 담아주겠다
+                body:JSON.stringify({
+                    id:id,
+                    pw:pw,
+                    nick:nick})
+            })
+            .then((res)=>res.json()).then((res)=>console.log("insert",res));
+            
         }
 
-
-
+        /* 1. nodejs_member 테이블의 데이터 중 ID가 "smhrd"인 회원 삭제
         const deleteData = () =>{
-            let id=document.getElementById("delID").value
-            let url=`http://localhost:3000/delete?id=${id}`
-            // nodejs_member 테이블의 데이터 중 ID가 "smhrd"인 회원 삭제
             // 삭제 성공 -> alert('성공')
             // 삭제 실패 -> alert('실패')
-            //let url = "http://localhost:3000/delete"
-           // fetch(url).then((res)=>res.json()).then((res)=>console.log(res));
-           fetch(url,{
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-             },
-            body:JSON.stringify({id:"test"})
+            let url = "http://localhost:3000/delete"
+            // fetch(url).then((res)=>res.json()).then((res)=>console.log(res)); 
+            //   -> fetch 두 번이면 두 번 실행됨 -> 오류남
+            fetch(url).then((res)=>res.json()).then((res)=>{
+                console.log(res);
+                if (res.data == 1){
+                    alert("성공");
+                }
+                else{
+                    alert("실패");
+                }
             });
-            
+        }
+        */ 
+
+        // 2. 입력한 ID에 해당하는 회원삭제
+        const deleteData =()=>{
+            let deleteId = document.getElementById("deleteID").value
+            let url = `http://localhost:3000/delete?id=${deleteId}`
+            fetch(url).then((res)=>res.json()).then((res)=>{
+                console.log(res);
+                if (res.data == 1){
+                    alert("성공");
+                }
+                else{
+                    alert("실패");
+                }
+            });
         }
     </script>
 </body>
